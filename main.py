@@ -52,16 +52,6 @@ class ArenaClient(discord.Client):
                     await message.channel.send("not authorized")
 
 
-
-    # called when Bot joins a Server
-    async def on_guild_join(self, guild):
-        if guild.system_channel:
-            await guild.system_channel.send("Hallo. Ich bin der Arena bot. schreibe a!help für Hilfe")
-
-    # called when Bot leaves a Server
-    async def on_guild_remove(self, guild):
-        print("Im gone")
-
     # is called wenn member changes state in voice channel
     async def on_voice_state_update(self, member, before, after):
         if not before.channel and not after.channel:
