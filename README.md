@@ -1,4 +1,4 @@
-# Small DiscordBot for temp Voice channels  
+# Small DiscordBot for temporary Voicechannels  
   
 This is a small Discord Bot written in Python to handle TempChannels  
   
