@@ -7,7 +7,7 @@ This is a small Discord Bot written in Python to handle TempChannels
 1. setup datebase:  
   
 		docker pull postgres:14  
-		docker run --name name-of-db -p 5432:5432 -e POSTGRES_PASSWORD=SECRET_PW -d postgres:142. 
+		docker run --name name-of-db -p 5432:5432 -e POSTGRES_PASSWORD=SECRET_PW -d postgres:14 
 2. create tables:  
   
        CREATE TABLE IF NOT EXISTS public.dc_server  
