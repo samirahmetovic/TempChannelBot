@@ -9,10 +9,10 @@ class Secret:
     password = ""
     token = ""
 
+
 my_secrets = Secret()
 
 class ArenaClient(discord.Client):
-
 
     async def on_ready(self):
         global my_secrets
@@ -49,7 +49,7 @@ class ArenaClient(discord.Client):
                 if auth == "guild_admin":
                     await self.admin(message)
                 else:
-                    await message.channel.send("not authorized")
+                    await message.channel.send("not authorized for that command")
 
 
     # is called wenn member changes state in voice channel
@@ -70,7 +70,7 @@ class ArenaClient(discord.Client):
         if after.channel:
             if tupel:
                 if after.channel.id == int(tupel[2]):
-                    tmpchannel = await after.channel.guild.create_voice_channel("Sprachchat",
+                    tmpchannel = await after.channel.guild.create_voice_channel(f"{member.name}'s channel",
                                                                                 category=after.channel.category)
                     await tmpchannel.edit(sync_permissions=False)
                     permsission = tmpchannel.permissions_for(member)
@@ -78,7 +78,7 @@ class ArenaClient(discord.Client):
                     await tmpchannel.set_permissions(member, overwrite=overwrite)
                     await member.move_to(tmpchannel)
 
-            # if somebody change VC check if one of thempchannel is empty
+            # if somebody change VC check if one of tempchannel is empty
         cat_id = int(tupel[1])
         try:
             if before.channel.category_id == cat_id:
@@ -99,8 +99,9 @@ class ArenaClient(discord.Client):
             vc = await message.guild.create_voice_channel("Create Tempchannel 🔊", category=cat)
             curser.execute(f"INSERT INTO dc_server VALUES ('{message.guild.id}', '{cat.id}', '{vc.id}')")
             self.connection.commit()
+            await message.channel.send("Tempchannels are created and ready to use")
         else:
-            await message.channel.send("Dein Server hat schon Tempchannels, Fals ein Fehler vorliegt nutze a!reset")
+            await message.channel.send("You're server has tempchannels yet. If there is an error, try a!reset")
 
     # ******************************************************************************************************
 
@@ -130,14 +131,17 @@ class ArenaClient(discord.Client):
             except:
                 pass
 
+        await message.channel.send("You're tempchannels are deleted")
+
     # ******************************************************************************************************
 
     async def admin(self, message):
         if len(message.role_mentions) == 1:
-            role = message.role_mentions[0].id
+            role = message.role_mentions[0]
             cursor = self.connection.cursor()
-            cursor.execute(f"UPDATE dc_server SET admin_role = '{role}' WHERE guild_id = '{message.guild.id}'")
+            cursor.execute(f"UPDATE dc_server SET admin_role = '{role.id}' WHERE guild_id = '{message.guild.id}'")
             self.connection.commit()
+            await message.channel.send(f"Role {role.mention} is now able to execute commands")
 
     # ******************************************************************************************************
 
