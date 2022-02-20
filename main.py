@@ -26,6 +26,7 @@ class ArenaClient(discord.Client):
         )
         self.message_handler = Message_Handler("t!", ["help", "setup", "reset", "admin"])
 
+
     async def on_message(self, message):
         command = self.message_handler.validate_message(message)
 
@@ -50,6 +51,7 @@ class ArenaClient(discord.Client):
                     await self.admin(message)
                 else:
                     await message.channel.send("not authorized for that command")
+
 
 
     # is called wenn member changes state in voice channel
@@ -188,7 +190,6 @@ class Message_Handler:
         return {
             "is_valid": False
         }
-
 
 client = ArenaClient()
 client.run(my_secrets.token)
